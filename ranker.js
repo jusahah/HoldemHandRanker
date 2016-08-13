@@ -189,7 +189,7 @@ function isHighestStraight(combo) {
 
 function isStraight(combo) {
 	var kickers = getKickersOfHand(combo);
-	console.log("isStraight")
+	//console.log("isStraight")
 	// Check if has ace, we need to create two versions
 	if (hasAceInKickers(kickers)) {
 		// Create version where 14 is 1
@@ -249,7 +249,7 @@ function allTheSameInArray(arr) {
 
 // Helper
 function kickersInDecreasingOrder(kickers) {
-	console.log(kickers);
+	//console.log(kickers);
 	var first = kickers[0];
 	var next = first - 1;
 
@@ -262,6 +262,72 @@ function kickersInDecreasingOrder(kickers) {
 	return nofail;
 
 
+}
+
+// Helper
+function findOutBestByKickers(evalInfos) {
+	// Multiply highest by 10^8, next 10^6, next 10^4, next 10^2, next 10^0 and sum up.
+	var bestEvalInfo =_.chain(evalInfos)
+	.map(function(evalInfo) {
+		var kickers = evalInfo.evaluation.kickers;
+		return {
+			kickersWorth: 
+				// Kickers are already in decreasing order
+				kickers[0] * Math.pow(10, 8) + 
+				kickers[1] * Math.pow(10, 6) + 
+				kickers[2] * Math.pow(10, 4) + 
+				kickers[3] * Math.pow(10, 2) + 
+				kickers[4] * Math.pow(10, 0)
+			,
+			evalInfo: evalInfo	
+		}
+	})
+	.sortBy(function(summedEvaluation) {
+		return (-1) * summedEvaluation.kickersWorth;
+	})
+	.head()
+	.get('evalInfo')
+	.value();
+
+	console.log("Best eval info out of many");
+	console.log(bestEvalInfo);
+
+	return bestEvalInfo
+
+}
+
+// Helper
+function rankCards(cards) {
+	return _.chain(cards)
+	.map(function(card) {
+		var cardVal = card.charAt(0);
+		if (cardVal === 'A') cardVal = 14;
+		else if (cardVal === 'K') cardVal = 13;
+		else if (cardVal === 'Q') cardVal = 12;
+		else if (cardVal === 'J') cardVal = 11;
+		else if (cardVal === 'T') cardVal = 10;
+		else cardVal = parseInt(cardVal);
+
+		return {
+			cardVal: cardVal,
+			cardSuit: card.charAt(1)
+		}
+
+	})
+	.sortBy(function(cardInfo) {
+		return (-1) * cardInfo.cardVal;
+	})
+	.map(function(cardInfo) {
+		var cardValText = cardInfo.cardVal;
+		if (cardValText === 14) cardValText = 'A';
+		else if (cardValText === 13) cardValText = 'K';
+		else if (cardValText === 12) cardValText = 'Q';
+		else if (cardValText === 11) cardValText = 'J';
+		else if (cardValText === 10) cardValText = 'T';
+
+		return cardValText + cardInfo.cardSuit;
+	})
+	.value();
 }
 
 module.exports = {
@@ -296,14 +362,28 @@ module.exports = {
 			}
 		})
 
-		var bests = evals.sort(function(a, b) {
-			return a.handRank - b.handRank;
+		console.log("--Evals--");
+		console.log(evals);
+		// Find out best handRank within the numerous evaluation objects
+		var bestRank = 10;
+		_.forEach(evals, function(evalInfo) {
+			if (bestRank > evalInfo.evaluation.handRank) bestRank = evalInfo.evaluation.handRank;
 		})
+		console.log("--Best rank found: " + bestRank);
+		// Only remain those which have the best handRank
+		var bests = _.filter(evals, function(evalInfo) {
+			return evalInfo.evaluation.handRank === bestRank;
+		})
+		console.log("--Best evals--");
+		console.log(bests);
+
+		var best = bests.length === 1 ? bests[0] : findOutBestByKickers(bests);
 
 		// Continue from here 
 		// Next differentiate between combos with same handRank but different kickers!
 
 		return {
+			cards: rankCards(best.combo),
 			handType: best.evaluation.handType,
 			kickers:  best.evaluation.kickers
 		}
