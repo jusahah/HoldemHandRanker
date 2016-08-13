@@ -106,6 +106,44 @@ describe("Hand resolve (STRAIGHT FLUSH)", function() {
 	
 });
 
+describe("Hand resolve (FOUR OF A KIND)", function() {
+
+
+	it("Should resolve to four of a kind", function() {
+		var handValue = handRanker.valueOfHand(['Ac', 'As', '5d', 'Kc', 'Ts'], ['Ah', 'Ad']);
+		console.log("Hand value");
+		console.log(handValue)
+		expect(handValue).to.deep.equal({
+			cards: ['Ac', 'As', 'Ad', 'Ah', 'Kc'],
+			handType: 'fourOfAKind',
+			kickers: [14, 14, 14, 14, 13]
+		});
+	})
+
+	it("Should resolve to four of a kind (2)", function() {
+		var handValue = handRanker.valueOfHand(['7h', '7c', '7s', 'Tc', 'Ts'], ['Td', '7d']);
+		console.log("Hand value");
+		console.log(handValue)
+		expect(handValue).to.deep.equal({
+			cards: ['Tc', '7h', '7c', '7s', '7d'],
+			handType: 'fourOfAKind',
+			kickers: [10, 7, 7, 7, 7]
+		});
+	})	
+
+	it("Should resolve to four of a kind (3)", function() {
+		var handValue = handRanker.valueOfHand(['7h', '7c', '7s', 'Jc', '7d'], ['2h', '3h']);
+		console.log("Hand value");
+		console.log(handValue)
+		expect(handValue).to.deep.equal({
+			cards: ['Jc', '7h', '7c', '7s', '7d'],
+			handType: 'fourOfAKind',
+			kickers: [11, 7, 7, 7, 7]
+		});
+	})	
+
+});
+
 describe("Hand resolve (FLUSH)", function() {
 
 
