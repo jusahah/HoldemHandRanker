@@ -19,6 +19,93 @@ describe("INTERNAL: Get combos", function() {
 	})
 })
 
+describe("Hand resolve (ROYAL FLUSH)", function() {
+
+
+	it("Should resolve to royal flush", function() {
+		var handValue = handRanker.valueOfHand(['Ah', 'Kh', 'Qh', 'Jh', '6d'], ['Tc', 'Th']);
+		console.log("Hand value");
+		console.log(handValue)
+		expect(handValue).to.deep.equal({
+			cards: ['Ah', 'Kh', 'Qh', 'Jh', 'Th'],
+			handType: 'royalFlush',
+			kickers: [14, 13, 12, 11, 10]
+		});
+	})
+
+	it("Should resolve to royal flush (2)", function() {
+		var handValue = handRanker.valueOfHand(['Ah', 'Kh', 'Qh', '8h', '9h'], ['Jh', 'Th']);
+		console.log("Hand value");
+		console.log(handValue)
+		expect(handValue).to.deep.equal({
+			cards: ['Ah', 'Kh', 'Qh', 'Jh', 'Th'],
+			handType: 'royalFlush',
+			kickers: [14, 13, 12, 11, 10]
+		});
+	})
+
+	it("Should resolve to royal flush (3)", function() {
+		var handValue = handRanker.valueOfHand(['As', 'Tc', 'Qc', 'Jc', 'Kc'], ['Ad', 'Ac']);
+		console.log("Hand value");
+		console.log(handValue)
+		expect(handValue).to.deep.equal({
+			cards: ['Ac', 'Kc', 'Qc', 'Jc', 'Tc'],
+			handType: 'royalFlush',
+			kickers: [14, 13, 12, 11, 10]
+		});
+	})
+
+	it("Should resolve to royal flush (4)", function() {
+		var handValue = handRanker.valueOfHand(['Ac', 'Tc', 'Qc', 'Jc', 'Kc'], ['2c', '2s']);
+		console.log("Hand value");
+		console.log(handValue)
+		expect(handValue).to.deep.equal({
+			cards: ['Ac', 'Kc', 'Qc', 'Jc', 'Tc'],
+			handType: 'royalFlush',
+			kickers: [14, 13, 12, 11, 10]
+		});
+	})	
+});
+
+describe("Hand resolve (STRAIGHT FLUSH)", function() {
+
+
+	it("Should resolve to straight flush", function() {
+		console.log("A low straight flush!")
+		var handValue = handRanker.valueOfHand(['Ad', '3d', '5d', 'Kc', 'Ts'], ['4d', '2d']);
+		console.log("Hand value");
+		console.log(handValue)
+		expect(handValue).to.deep.equal({
+			cards: ['Ad', '5d', '4d', '3d', '2d'],
+			handType: 'straightFlush',
+			kickers: [14, 5, 4, 3, 2]
+		});
+	})
+
+	it("Should resolve to straight flush (2)", function() {
+		var handValue = handRanker.valueOfHand(['Kd', '9d', 'Qd', 'Jd', 'Td'], ['Ac', 'As']);
+		console.log("Hand value");
+		console.log(handValue)
+		expect(handValue).to.deep.equal({
+			cards: ['Kd', 'Qd', 'Jd', 'Td', '9d'],
+			handType: 'straightFlush',
+			kickers: [13, 12, 11, 10, 9]
+		});
+	})
+
+	it("Should resolve to straight flush (3)", function() {
+		var handValue = handRanker.valueOfHand(['6d', '3d', '5d', 'Kc', 'Ts'], ['4d', '2d']);
+		console.log("Hand value");
+		console.log(handValue)
+		expect(handValue).to.deep.equal({
+			cards: ['6d', '5d', '4d', '3d', '2d'],
+			handType: 'straightFlush',
+			kickers: [6, 5, 4, 3, 2]
+		});
+	})
+	
+});
+
 describe("Hand resolve (FLUSH)", function() {
 
 
@@ -53,5 +140,5 @@ describe("Hand resolve (FLUSH)", function() {
 			handType: 'flush',
 			kickers: [13, 11, 10, 7, 2]
 		});
-	})		
+	})			
 });

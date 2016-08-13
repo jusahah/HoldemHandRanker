@@ -197,7 +197,7 @@ function isStraight(combo) {
 			if (kicker === 14) return 1;
 			return kicker;
 		}).sort(function(a,b) {
-			b-a;
+			return b-a;
 		})
 
 		return kickersInDecreasingOrder(kickers) || kickersInDecreasingOrder(sndVersion);
