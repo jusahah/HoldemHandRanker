@@ -209,21 +209,47 @@ function isStraight(combo) {
 function isThreeOfAKind(combo) {
 	var kickers = getKickersOfHand(combo);
 
+	console.log("Kickers");
+	console.log(kickers)
+
 	// Possible trips (after sorted): xxx00, 0xxx0, 00xxx
 	var first = _.take(kickers, 3);
 	var middle = _.tail(_.take(kickers, 4));
 	var last = _.takeRight(kickers, 3);
 
-	if (allTheSameInArray(first) || allTheSameInArray(middle) || allTheSameInArray(last));
+	return (allTheSameInArray(first) || allTheSameInArray(middle) || allTheSameInArray(last));
 }
 
 function isTwoPairs(combo) {
-	// To be implemented
+	var kickers = getKickersOfHand(combo);
+
+	// Possible two pairs (after sorted): xxyy0, xx0yy, 0xxyy
+	console.log(kickers);
+	// xxyy0
+	var firstPair = _.take(kickers,2);
+	var sndPair   = _.takeRight(_.initial(kickers), 2);
+	if (allTheSameInArray(firstPair) && allTheSameInArray(sndPair)) return true;
+
+	// xx0yy
+	sndPair = _.takeRight(kickers, 2);
+	if (allTheSameInArray(firstPair) && allTheSameInArray(sndPair)) return true;
+
+	// 0xxyy
+	firstPair = _.take(_.tail(kickers), 2);
+	if (allTheSameInArray(firstPair) && allTheSameInArray(sndPair)) return true;
+
 	return false;
+
 }
 
 function isPair(combo) {
-	// To be implemented
+	// Possible pairs: xx000, 0xx00, 00xx0, 000xx
+	var kickers = getKickersOfHand(combo);
+
+	if (allTheSameInArray(_.take(kickers, 2))) return true;
+	if (allTheSameInArray(_.take(_.tail(kickers), 2))) return true;
+	if (allTheSameInArray(_.takeRight(_.initial(kickers), 2))) return true;	
+	if (allTheSameInArray(_.takeRight(kickers, 2))) return true;
 	return false;
 }
 
