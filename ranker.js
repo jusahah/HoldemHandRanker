@@ -99,6 +99,16 @@ var evaluateCombo = function(combo) {
 		}
 	}
 
+	// We test separately for A->2->3->4->5 straight so we can convert ace to 1
+
+	if (isLowestStraight(combo)) {
+		return {
+			handType: 'straight',
+			handRank: 6, 
+			kickers: [5,4,3,2,1]
+		}
+	}
+	
 	if (isStraight(combo)) {
 		return {
 			handType: 'straight',
@@ -106,6 +116,7 @@ var evaluateCombo = function(combo) {
 			kickers: getKickersOfHand(combo)
 		}
 	}
+
 	if (isThreeOfAKind(combo)) {
 		return {
 			handType: 'threeOfAKind',
@@ -185,6 +196,16 @@ function isHighestStraight(combo) {
 	&& kickers[2] === 12 
 	&& kickers[3] === 11
 	&& kickers[4] === 10)
+}
+
+function isLowestStraight(combo) {
+	var kickers = getKickersOfHand(combo);
+
+	return (kickers[0] === 14 
+	&& kickers[1] === 5
+	&& kickers[2] === 4 
+	&& kickers[3] === 3
+	&& kickers[4] === 2)
 }
 
 function isStraight(combo) {
@@ -323,6 +344,40 @@ function findOutBestByKickers(evalInfos) {
 }
 
 // Helper
+function findOutBestByKickersDrawPossible(evalObjs) {
+	// Multiply highest by 10^8, next 10^6, next 10^4, next 10^2, next 10^0 and sum up.
+	var bestEvalInfos =_.chain(evalObjs)
+	.map(function(evalObj) {
+		var kickers = evalObj.evalInfo.kickers;
+		return {
+			id: evalObj.id,
+			kickersWorth: 
+				// Kickers are already in decreasing order
+				kickers[0] * Math.pow(10, 8) + 
+				kickers[1] * Math.pow(10, 6) + 
+				kickers[2] * Math.pow(10, 4) + 
+				kickers[3] * Math.pow(10, 2) + 
+				kickers[4] * Math.pow(10, 0)
+			,
+			evalInfo: evalObj.evalInfo	
+		}
+	})
+	.sortBy(function(summedEvaluation) {
+		return (-1) * summedEvaluation.kickersWorth;
+	})
+	.value();
+
+	// Check if multiple hands are drawing the best kickers
+
+	var checkedAgainst = bestEvalInfos[0];
+
+	return _.filter(bestEvalInfos, function(evalInfo) {
+		return evalInfo.kickersWorth === checkedAgainst.kickersWorth;
+	})
+
+}
+
+// Helper
 function rankCards(cards) {
 	return _.chain(cards)
 	.map(function(card) {
@@ -356,6 +411,135 @@ function rankCards(cards) {
 	.value();
 }
 
+
+/*
+* METHODS FOR RESOLVING ORDER BASED ON KICKERS
+*
+*/
+// Dispatcher
+function resolveBestKickerUsage(evalObjs, rank) {
+	// Should probably use a mapping of rank -> function instead here
+	// And convert those magic numbers into constants for god's sake.
+	if (rank === 10) return resolveBetweenHighCards(evalObjs);
+	if (rank === 9) return resolveBetweenPairs(evalObjs);
+	if (rank === 8) return resolveBetweenTwoPairs(evalObjs);
+	if (rank === 7) return resolveBetweenTrips(evalObjs);
+	if (rank === 6) return resolveBetweenStraights(evalObjs);
+	if (rank === 5) return resolveBetweenFlushes(evalObjs);
+	if (rank === 4) return resolveBetweenFullHouses(evalObjs);
+	if (rank === 3) return resolveBetweenQuads(evalObjs);
+	if (rank === 2) return resolveBetweenStraightFlushes(evalObjs);
+	if (rank === 1) return resolveBetweenRoyalFlushes(evalObjs);
+
+	throw new Error("Resolving best kicker failed - no resolve method to call?");
+}
+
+function resolveBetweenRoyalFlushes(evals) {
+	// Well there can be just one or else all players share the board royal flush
+	return evals;
+	
+}
+function resolveBetweenStraightFlushes(evals) {
+
+	
+}
+function resolveBetweenQuads(evals) {
+	
+}
+function resolveBetweenFullHouses(evals) {
+	
+}
+function resolveBetweenFlushes(evals) {
+
+}
+function resolveBetweenStraights(evals) {
+	
+}
+function resolveBetweenTrips(evals) {
+	
+}
+function resolveBetweenTwoPairs(evals) {
+	
+}
+function resolveBetweenPairs(evals) {
+	
+}
+function resolveBetweenHighCards(evals) {
+	
+}
+
+
+
+// PUBLIC API METHOD
+function valueOfHand(boardCards, holeCards, includeHandRank) {
+	// Concat hole cards and board cards together
+	var cardsToUse = _.flatten(_.concat(boardCards, holeCards));
+	// Generate all possible five card combos
+	var combos = createAllFiveCombos(cardsToUse);
+	// Evaluate each combo
+	var evals = _.map(combos, function(combo) {
+		return {
+			combo: combo,
+			evaluation: evaluateCombo(combo)
+		}
+	})
+
+	console.log("--Evals--");
+	console.log(evals);
+	// Find out best handRank within the numerous evaluation objects
+	var bestRank = 10;
+	_.forEach(evals, function(evalInfo) {
+		if (bestRank > evalInfo.evaluation.handRank) bestRank = evalInfo.evaluation.handRank;
+	})
+	console.log("--Best rank found: " + bestRank);
+	// Only remain those which have the best handRank
+	var bests = _.filter(evals, function(evalInfo) {
+		return evalInfo.evaluation.handRank === bestRank;
+	})
+	console.log("--Best evals--");
+	console.log(bests);
+
+	var best = bests.length === 1 ? bests[0] : findOutBestByKickers(bests);
+
+	// Continue from here 
+	// Next differentiate between combos with same handRank but different kickers!
+
+	var o = {
+		cards: rankCards(best.combo),
+		handType: best.evaluation.handType,
+		kickers:  best.evaluation.kickers
+	}
+
+	if (includeHandRank) o.handRank = best.evaluation.handRank;
+	return o;
+
+}
+
+// PUBLIC API METHOD
+function rankEvaluations(evals) {
+
+	var bestRank = 10;
+	_.forEach(evals, function(evalObj) {
+		if (bestRank > evalObj.evalInfo.handRank) bestRank = evalObj.evalInfo.handRank;
+	})
+	console.log("--Best rank found: " + bestRank);
+	// Only remain those which have the best handRank
+	var bests = _.filter(evals, function(evalObj) {
+		return evalObj.evalInfo.handRank === bestRank;
+	});
+
+	return bests.length === 1 ? bests : resolveBestKickerUsage(bests, bestRank);
+
+}
+
+function getRankVal(evalInfo) {
+
+	if (evalInfo.handType === 'roaylFlush') return Math.pow(10, 12);
+	if (evalInfo.handType === 'straightFlush') {
+
+	}
+}
+
 module.exports = {
 
 	// Test interface
@@ -375,46 +559,7 @@ module.exports = {
 	* @param {Array} holeCards - The two private hole cards of the player
 	* @returns {Object} - Object containing info about the value of the hand
 	*/
-	valueOfHand: function(boardCards, holeCards) {
-		// Concat hole cards and board cards together
-		var cardsToUse = _.flatten(_.concat(boardCards, holeCards));
-		// Generate all possible five card combos
-		var combos = createAllFiveCombos(cardsToUse);
-		// Evaluate each combo
-		var evals = _.map(combos, function(combo) {
-			return {
-				combo: combo,
-				evaluation: evaluateCombo(combo)
-			}
-		})
-
-		console.log("--Evals--");
-		console.log(evals);
-		// Find out best handRank within the numerous evaluation objects
-		var bestRank = 10;
-		_.forEach(evals, function(evalInfo) {
-			if (bestRank > evalInfo.evaluation.handRank) bestRank = evalInfo.evaluation.handRank;
-		})
-		console.log("--Best rank found: " + bestRank);
-		// Only remain those which have the best handRank
-		var bests = _.filter(evals, function(evalInfo) {
-			return evalInfo.evaluation.handRank === bestRank;
-		})
-		console.log("--Best evals--");
-		console.log(bests);
-
-		var best = bests.length === 1 ? bests[0] : findOutBestByKickers(bests);
-
-		// Continue from here 
-		// Next differentiate between combos with same handRank but different kickers!
-
-		return {
-			cards: rankCards(best.combo),
-			handType: best.evaluation.handType,
-			kickers:  best.evaluation.kickers
-		}
-
-	},
+	valueOfHand: valueOfHand,
 
 	/*
 	* Resolves the ranking between multiple hands
@@ -422,7 +567,32 @@ module.exports = {
 	* @param {Array} arrayOfHoleCards - Array of holecard arrays
 	* @returns {Array} - Array where holecards are ranked in order (most valued 1st)
 	*/	
-	rankHands: function(boardCards, arrayOfHoleCards) {
+	rankHands: function(boardCards, arrayOfHoleCardObjects) {
 
-	}
+		// holeCardObject = {id (optional): INT/STRING, cards: ARRAY[2]}
+
+		var evals = _.map(arrayOfHoleCardObjects, function(holeCardObject) {
+			var holeCards = holeCardObject.cards;
+			return {
+				id: holeCardObject.id,
+				evalInfo: valueOfHand(boardCards, holeCards, true)
+			}
+		});
+		console.log("RANK HAND EVALS");
+		console.log(evals);
+
+		var bests = rankEvaluations(evals);
+
+		console.log("BEST RANKED HAND");
+		console.log(bests);
+
+		return bests;
+
+	},
+	/*
+	* Resolves the ranking between multiple eval-objects (as returned by valueOfHand)
+	* @param {Array} evals - Array of evaluation objects
+	* @returns {Array} - Array where evaluations are ranked best first
+	*/	
+	rankEvaluations: rankEvaluations
 }

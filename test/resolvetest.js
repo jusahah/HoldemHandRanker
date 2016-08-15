@@ -1,3 +1,4 @@
+var _ = require('lodash');
 // Testing dev deps
 var chai = require('chai');
 var expect = chai.expect;
@@ -238,6 +239,17 @@ describe("Hand resolve (FLUSH)", function() {
 			handType: 'flush',
 			kickers: [13, 11, 10, 7, 2]
 		});
+	})	
+
+	it("Should resolve to flush (4)", function() {
+		var handValue = handRanker.valueOfHand(['3d', '4s', '5d', '6s', '7d'], ['8d', '9d']);
+		console.log("Hand value");
+		console.log(handValue)
+		expect(handValue).to.deep.equal({
+			cards: ['9d', '8d', '7d', '5d', '3d'],
+			handType: 'flush',
+			kickers: [9,8,7,5,3]
+		});
 	})			
 });
 
@@ -250,7 +262,7 @@ describe("Hand resolve (STRAIGHT)", function() {
 		expect(handValue).to.deep.equal({
 			cards: ['Ah', '5c', '4c', '3c', '2s'],
 			handType: 'straight',
-			kickers: [14,5,4,3,2]
+			kickers: [5,4,3,2,1]
 		});
 	})
 
@@ -454,4 +466,120 @@ describe("Hand resolve (HIGH CARD)", function() {
 			kickers: [10,9,7,6,5]
 		});
 	})		
+});
+
+
+describe("Hand comparisons", function() {
+	it("All should draw with flush", function() {
+		var winningHands = handRanker.rankHands(
+			['2h', '3h', '5h', '6h', 'Kh'], // BOARD
+			[
+				{id: 1, cards: ['3s', 'Ac']}, // P1
+				{id: 2, cards: ['Ks', 'Qd']}, // P2
+				{id: 3, cards: ['2s', '6c']}  // P2
+			]
+		);
+		console.log("Winning hands");
+		console.log(winningHands)
+		expect(winningHands.length).to.equal(3);
+
+		var winnerIDs = _.map(winningHands, function(winningEval) {
+			return winningEval.id;
+		})
+		expect(winnerIDs).to.deep.equal([1,2,3]);
+	})
+
+	it("Pair should win highCard", function() {
+		var winningHands = handRanker.rankHands(
+			['2h', '3c', '5h', '6h', '8s'], // BOARD
+			[
+				{id: 1, cards: ['3s', 'Ad']}, // P1
+				{id: 2, cards: ['Ks', 'Qd']}  // P2
+			]
+		);
+		console.log("Winning hand");
+		console.log(winningHands)
+		// One winner
+		expect(winningHands.length).to.equal(1);
+		// P1 wins
+		expect(winningHands[0].id).to.equal(1);
+	})	
+
+	it("Higher straight should win lower straight and trips", function() {
+		var winningHands = handRanker.rankHands(
+			['Ah', 'Kc', 'Qh', '2h', '3s'], // BOARD
+			[
+				{id: 1, cards: ['4d', '5d']}, // P1
+				{id: 2, cards: ['Td', 'Jd']}, // P2
+				{id: 3, cards: ['3c', '3h']}, // P3
+			]
+		);
+		console.log("Winning hands");
+		console.log(winningHands)
+		// One winner
+		expect(winningHands.length).to.equal(1);
+		// P2 wins
+		expect(winningHands[0].id).to.equal(2);
+	})	
+
+	it("Quads should win lower flush and full house", function() {
+		var winningHands = handRanker.rankHands(
+			['Kh', 'Kc', 'Qh', 'Qc', '3c'], // BOARD
+			[
+				{id: 1, cards: ['4c', 'Ac']}, // P1 -> flush
+				{id: 2, cards: ['5c', '6c']}, // P2 -> flush
+				{id: 3, cards: ['Kd', '6s']}, // P3 -> full house
+				{id: 4, cards: ['Qs', 'Qd']}, // P4 -> quads
+			]
+		);
+		console.log("Winning hands");
+		console.log(winningHands)
+		// One winner
+		expect(winningHands.length).to.equal(1);
+		// P2 wins
+		expect(winningHands[0].id).to.equal(4);
+	})
+
+	it("Two pairs with same kickers draw", function() {
+		var winningHands = handRanker.rankHands(
+			['Th', 'Kc', '3h', '4c', 'Tc'], // BOARD
+			[
+				{id: 1, cards: ['Jd', 'Jh']}, // P1 -> two pairs winning
+				{id: 2, cards: ['Jc', 'Js']}, // P2 -> two pairs winning
+				{id: 3, cards: ['4d', '6s']}, // P3 -> two pairs losing
+				{id: 4, cards: ['As', '2c']}, // P4 -> pair
+			]
+		);
+		console.log("Winning hands");
+		console.log(winningHands)
+
+		// Two winners
+		expect(winningHands.length).to.equal(2);
+
+		var winnerIDs = _.map(winningHands, function(winningEval) {
+			return winningEval.id;
+		})
+		// P1 and P2 win
+		expect(winnerIDs).to.deep.equal([1,2]);
+	})
+
+	it("Pair with good kicker wins over pair with lousy kicker", function() {
+		var winningHands = handRanker.rankHands(
+			['6h', 'Kc', '3d', '8d', 'Jh'], // BOARD
+			[
+				{id: 1, cards: ['3s', 'As']}, // P1 -> small pair
+				{id: 2, cards: ['Js', '4h']}, // P3 -> big pair with lousy kicker
+				{id: 3, cards: ['Jc', 'Qd']}, // P2 -> big pair with good kicker
+				{id: 4, cards: ['2d', '2c']}, // P4 -> small pair
+			]
+		);
+		console.log("Winning hands");
+		console.log(winningHands)
+
+		// One winner
+		expect(winningHands.length).to.equal(1);
+		// P3 wins
+		expect(winningHands[0].id).to.equal(3);
+	})
+
 });
