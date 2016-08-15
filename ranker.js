@@ -100,7 +100,6 @@ var evaluateCombo = function(combo) {
 	}
 
 	// We test separately for A->2->3->4->5 straight so we can convert ace to 1
-
 	if (isLowestStraight(combo)) {
 		return {
 			handType: 'straight',
@@ -108,7 +107,7 @@ var evaluateCombo = function(combo) {
 			kickers: [5,4,3,2,1]
 		}
 	}
-	
+
 	if (isStraight(combo)) {
 		return {
 			handType: 'straight',
@@ -417,55 +416,146 @@ function rankCards(cards) {
 *
 */
 // Dispatcher
-function resolveBestKickerUsage(evalObjs, rank) {
+function resolveBestKickerUsage(kickers, rank) {
 	// Should probably use a mapping of rank -> function instead here
 	// And convert those magic numbers into constants for god's sake.
-	if (rank === 10) return resolveBetweenHighCards(evalObjs);
-	if (rank === 9) return resolveBetweenPairs(evalObjs);
-	if (rank === 8) return resolveBetweenTwoPairs(evalObjs);
-	if (rank === 7) return resolveBetweenTrips(evalObjs);
-	if (rank === 6) return resolveBetweenStraights(evalObjs);
-	if (rank === 5) return resolveBetweenFlushes(evalObjs);
-	if (rank === 4) return resolveBetweenFullHouses(evalObjs);
-	if (rank === 3) return resolveBetweenQuads(evalObjs);
-	if (rank === 2) return resolveBetweenStraightFlushes(evalObjs);
-	if (rank === 1) return resolveBetweenRoyalFlushes(evalObjs);
+	if (rank === 10) return resolveBetweenHighCards(kickers);
+	if (rank === 9) return resolveBetweenPairs(kickers);
+	if (rank === 8) return resolveBetweenTwoPairs(kickers);
+	if (rank === 7) return resolveBetweenTrips(kickers);
+	if (rank === 6) return resolveBetweenStraights(kickers);
+	if (rank === 5) return resolveBetweenFlushes(kickers);
+	if (rank === 4) return resolveBetweenFullHouses(kickers);
+	if (rank === 3) return resolveBetweenQuads(kickers);
+	if (rank === 2) return resolveBetweenStraightFlushes(kickers);
+	if (rank === 1) return resolveBetweenRoyalFlushes(kickers);
 
 	throw new Error("Resolving best kicker failed - no resolve method to call?");
 }
 
-function resolveBetweenRoyalFlushes(evals) {
+function resolveBetweenRoyalFlushes(kickers) {
 	// Well there can be just one or else all players share the board royal flush
-	return evals;
+	return 1; // Only way to share royal flush is to have one on board
 	
 }
-function resolveBetweenStraightFlushes(evals) {
+function resolveBetweenStraightFlushes(kickers) {
+	return _.reduce(kickers, function(s, kicker) {
+		return s + kicker;
+	}, 0);
+	
+}
+function resolveBetweenQuads(kickers) {
+	var kickersToCounts = _.countBy(kickers, function(kicker) { return kicker});
+	var quadVal = 0;
+	var kickerVal = 0;
+	_.forOwn(kickersToCounts, function(count, kicker) {
+		if (count === 4) {
+			quadVal = kicker;
+		}
+		else if (count === 1) {
+			kickerVal = kicker;
+		} 
+	});
 
-	
+	return quadVal * 100 + kickerVal;
 }
-function resolveBetweenQuads(evals) {
-	
-}
-function resolveBetweenFullHouses(evals) {
-	
-}
-function resolveBetweenFlushes(evals) {
+function resolveBetweenFullHouses(kickers) {
+	var kickersToCounts = _.countBy(kickers, function(kicker) { return kicker});
+	var threeVal = 0;
+	var twoVal = 0;
+	_.forOwn(kickersToCounts, function(count, kicker) {
+		if (count === 3) {
+			threeVal = kicker;
+		}
+		else if (count === 2) {
+			twoVal = kicker;
+		} 
+	});
 
+	return threeVal * 100 + twoVal;
 }
-function resolveBetweenStraights(evals) {
-	
+function resolveBetweenFlushes(kickers) {
+	return (kickers[0] * Math.pow(10, 8)
+	+ kickers[1] * Math.pow(10, 6)
+	+ kickers[2] * Math.pow(10, 4)
+	+ kickers[3] * Math.pow(10, 2)
+	+ kickers[4] * Math.pow(10, 0));	
 }
-function resolveBetweenTrips(evals) {
-	
+
+function resolveBetweenStraights(kickers) {
+	return _.reduce(kickers, function(s, kicker) {
+		return s + kicker;
+	}, 0);	
 }
-function resolveBetweenTwoPairs(evals) {
-	
+function resolveBetweenTrips(kickers) {
+	var kickersToCounts = _.countBy(kickers, function(kicker) { return kicker});
+	var threeVal = 0;
+	var extras = [];
+	_.forOwn(kickersToCounts, function(count, kicker) {
+		if (count === 3) {
+			threeVal = kicker;
+		}
+		else if (count === 1) {
+			extras.push(kicker);
+		} 
+	});
+
+	extras = extras.sort(function(a,b) {
+		return b-a;
+	})
+
+	return threeVal * 10000 + extras[0] * 100 + extras[1];	
 }
-function resolveBetweenPairs(evals) {
-	
+function resolveBetweenTwoPairs(kickers) {
+	var kickersToCounts = _.countBy(kickers, function(kicker) { return kicker});
+	var twoPairFormingVals = [];
+	var extra = 0
+	_.forOwn(kickersToCounts, function(count, kicker) {
+		if (count === 2) {
+			twoPairFormingVals.push(kicker);
+		}
+		else if (count === 1) {
+			extra = kicker;
+		} 
+	});
+
+	twoPairFormingVals = twoPairFormingVals.sort(function(a,b) {
+		return b-a;
+	})
+
+	return twoPairFormingVals[0] * 10000 + twoPairFormingVals[1] * 100 + extra;	
 }
-function resolveBetweenHighCards(evals) {
-	
+function resolveBetweenPairs(kickers) {
+	var kickersToCounts = _.countBy(kickers, function(kicker) { return kicker});
+	var pair = 0;
+	var extras = [];
+
+	_.forOwn(kickersToCounts, function(count, kicker) {
+		if (count === 2) {
+			pair = kicker;
+		}
+		else if (count === 1) {
+			extras.push(kicker);
+		} 
+	});
+
+	extras = extras.sort(function(a,b) {
+		return b-a;
+	})
+
+	return (
+	       pair * 1000000
+	+ extras[0] * 10000	
+	+ extras[1] * 100
+	+ extras[2] * 1
+	)
+}
+function resolveBetweenHighCards(kickers) {
+	return (kickers[0] * Math.pow(10, 8)
+	+ kickers[1] * Math.pow(10, 6)
+	+ kickers[2] * Math.pow(10, 4)
+	+ kickers[3] * Math.pow(10, 2)
+	+ kickers[4] * Math.pow(10, 0));
 }
 
 
@@ -518,6 +608,7 @@ function valueOfHand(boardCards, holeCards, includeHandRank) {
 // PUBLIC API METHOD
 function rankEvaluations(evals) {
 
+	// Resolve best winning hand type
 	var bestRank = 10;
 	_.forEach(evals, function(evalObj) {
 		if (bestRank > evalObj.evalInfo.handRank) bestRank = evalObj.evalInfo.handRank;
@@ -528,7 +619,28 @@ function rankEvaluations(evals) {
 		return evalObj.evalInfo.handRank === bestRank;
 	});
 
-	return bests.length === 1 ? bests : resolveBestKickerUsage(bests, bestRank);
+	// Resolve among winning hand types the one with best kickers
+	var bestEvalInfos =_.chain(bests)
+	.map(function(evalObj) {
+		var kickers = evalObj.evalInfo.kickers;
+		return {
+			id: evalObj.id,
+			kickersWorth: resolveBestKickerUsage(kickers, bestRank),
+			evalInfo: evalObj.evalInfo	
+		}
+	})
+	.sortBy(function(summedEvaluation) {
+		return (-1) * summedEvaluation.kickersWorth;
+	})
+	.value();
+
+	// Check if multiple hands are drawing the best kickers
+
+	var checkedAgainst = bestEvalInfos[0];
+
+	return _.filter(bestEvalInfos, function(evalInfo) {
+		return evalInfo.kickersWorth === checkedAgainst.kickersWorth;
+	})
 
 }
 
