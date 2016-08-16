@@ -26,15 +26,17 @@ HoldemRanker presents very simple API. The API has two methods:
 >
 > @param {Array(5)} communityCards - Array of five cards on board
 >
-> @param {Array(x)} arrayOfHoleCards - Array of arrays of each player's hole cards
+> @param {Array(x)} arrayOfHoleCards - Array of hand objects of each player's hole cards
 >
 > @returns {Array} - Returns Array containing winning hands (see examples)
 >
+> * Note: hand object is simply a object with at least two keys: id and cards.
 
 ---
 
 ### Examples
 
+**Example: valueOfHand**
 ```javascript
 
 var handRanker = require('holdemranker');
@@ -53,6 +55,7 @@ expect(handValue).to.deep.equal({
 
 ```
 
+**Example: getWinners (1)**
 ```javascript
 
 var handRanker = require('holdemranker');
@@ -60,6 +63,7 @@ var handRanker = require('holdemranker');
 var winningHands = handRanker.getWinners(
   ['Kh', 'Kc', 'Qh', 'Qc', '3c'], // BOARD
   [
+    // Hand object must have 'id' and 'cards' keys
     {id: 1, cards: ['4c', 'Ac']}, // P1 -> flush
     {id: 2, cards: ['5c', '6c']}, // P2 -> flush
     {id: 3, cards: ['Kd', '6s']}, // P3 -> full house
@@ -68,11 +72,35 @@ var winningHands = handRanker.getWinners(
 );
 
 // winningHands is now Array of hands that share the win.
+// Using passed-in hand objects with 'id'-keys we can now check which player won.
 
-// One winner (P4 holding quads)
+// One winner
 expect(winningHands.length).to.equal(1);
 // P4 wins
 expect(winningHands[0].id).to.equal(4);
+
+```
+
+**Example: getWinners (2)**
+```javascript
+
+var winningHands = handRanker.getWinners(
+  ['3s', '5s', '7c', '8c', 'Jd'], // BOARD
+  [
+    {id: 1, cards: ['2d', '4h']}, // 8-high straight, loses
+    {id: 2, cards: ['9s', 'Ts']}, // J-high straight, shares win
+    {id: 3, cards: ['Tc', '9d']}, // J-high straight, shares win
+    {id: 4, cards: ['6s', '9h']}, // 9-high straight, loses
+  ]
+);
+
+// Two winners
+expect(winningHands.length).to.equal(2);
+// P2 and P3 win
+var winnerIDs = _.map(winningHands, function(winningEval) {
+	return winningEval.id;
+})
+expect(winnerIDs).to.deep.equal([2,3]);
 
 ```
 
