@@ -106,6 +106,20 @@ expect(winnerIDs).to.deep.equal([2,3]);
 
 ```
 
+### Tests
+
+Uses Mocha. Run:
+
+```javascript
+
+npm test
+
+```
+
+### Dependencies
+
+Uses Lodash as only depedency.
+
 --- 
 
 #### MIT License and so on
