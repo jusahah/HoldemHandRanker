@@ -47,7 +47,7 @@ HoldemRanker presents very simple API. The API has two methods:
 **Example: valueOfHand**
 ```javascript
 
-var handRanker = require('./holdemranker');
+var handRanker = require('holdemhandranker');
 
 var handValue = handRanker.valueOfHand(
   ['Ah', 'Kh', 'Qh', '8h', '9h'], // Community cards
@@ -66,7 +66,7 @@ expect(handValue).to.deep.equal({
 **Example: getWinners (1)**
 ```javascript
 
-var handRanker = require('./holdemranker');
+var handRanker = require('holdemhandranker');
 
 var winningHands = handRanker.getWinners(
   ['Kh', 'Kc', 'Qh', 'Qc', '3c'], // BOARD
@@ -92,7 +92,7 @@ expect(winningHands[0].id).to.equal(4);
 **Example: getWinners (2)**
 ```javascript
 
-var handRanker = require('./holdemranker');
+var handRanker = require('holdemhandranker');
 
 var winningHands = handRanker.getWinners(
   ['3s', '5s', '7c', '8c', 'Jd'], // BOARD
