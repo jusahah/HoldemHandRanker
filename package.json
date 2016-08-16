@@ -1,6 +1,6 @@
 {
-  "name": "holdemranker",
-  "version": "1.0.0",
+  "name": "holdemhandranker",
+  "version": "0.0.1",
   "description": "Ranks and evaluates Texas Holdem hands",
   "main": "index.js",
   "scripts": {
@@ -8,10 +8,20 @@
   },
   "author": "Jussi Hämäläinen",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:jusahah/HoldemHandRanker.git"
+  },  
   "dependencies": {
     "lodash": "^4.15.0"
   },
   "devDependencies": {
     "chai": "^3.5.0"
-  }
+  },
+  "keywords": [
+    "poker",
+    "holdem",
+    "texas",
+    "cards"
+  ]
 }

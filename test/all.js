@@ -3,7 +3,7 @@ var _ = require('lodash');
 var chai = require('chai');
 var expect = chai.expect;
 // Domain deps
-var handRanker = require('../ranker');
+var handRanker = require('../index');
 
 // As a reminder, not used in code
 var CARDS = [
