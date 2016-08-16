@@ -7,18 +7,29 @@ This component ranks poker hands. For example, you can give it an array of hands
 HoldemRanker presents very simple API. The API has two methods:
 
 > **HoldemRanker.valueOfHand(communityCards, holeCards)**
+>
 > *Returns a representation of the value of given hand*
+>
 > @param {Array(5)} communityCards - Array of five cards on board
+>
 > @param {Array(2)} holeCards - Array of two cards player is holding
+>
 > @returns {Object} - Returns object containing info about the hand (see examples)
-> 
+>
+> ---
 >
 > **HoldemRanker.getWinners(communityCards, arrayOfHoleCards)**
+>
 > *Given an array of hands, returns the winning hands. If one hand is superior to all the rest,*
+>
 > *return value is Array(1). Otherwise Array(x) where x is num of hands sharing the win.*
+>
 > @param {Array(5)} communityCards - Array of five cards on board
+>
 > @param {Array(x)} arrayOfHoleCards - Array of arrays of each player's hole cards
+>
 > @returns {Array} - Returns Array containing winning hands (see examples)
+>
 
 ---
 
