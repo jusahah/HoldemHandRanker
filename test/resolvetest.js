@@ -11,22 +11,23 @@ var CARDS = [
 	['Ac', '2c', '3c', '4c', '5c', '6c', '7c', '8c', '9c', 'Tc', 'Jc', 'Qc', 'Kc'],
 	['Ad', '2d', '3d', '4d', '5d', '6d', '7d', '8d', '9d', 'Td', 'Jd', 'Qd', 'Kd']
 ];
-
+/*
 describe("INTERNAL: Get combos", function() {
 
 	it("Should get all combos", function() {
 		var combos = handRanker.getCombos(['Ah', '2h', '3h', '4h', '5h'], ['6h', '7h']);
-		console.log(combos);
+		//console.log(combos);
 	})
 })
+*/
 
 describe("Hand resolve (ROYAL FLUSH)", function() {
 
 
 	it("Should resolve to royal flush", function() {
 		var handValue = handRanker.valueOfHand(['Ah', 'Kh', 'Qh', 'Jh', '6d'], ['Tc', 'Th']);
-		console.log("Hand value");
-		console.log(handValue)
+		//console.log("Hand value");
+		//console.log(handValue)
 		expect(handValue).to.deep.equal({
 			cards: ['Ah', 'Kh', 'Qh', 'Jh', 'Th'],
 			handType: 'royalFlush',
@@ -36,8 +37,8 @@ describe("Hand resolve (ROYAL FLUSH)", function() {
 
 	it("Should resolve to royal flush (2)", function() {
 		var handValue = handRanker.valueOfHand(['Ah', 'Kh', 'Qh', '8h', '9h'], ['Jh', 'Th']);
-		console.log("Hand value");
-		console.log(handValue)
+		//console.log("Hand value");
+		//console.log(handValue)
 		expect(handValue).to.deep.equal({
 			cards: ['Ah', 'Kh', 'Qh', 'Jh', 'Th'],
 			handType: 'royalFlush',
@@ -47,8 +48,8 @@ describe("Hand resolve (ROYAL FLUSH)", function() {
 
 	it("Should resolve to royal flush (3)", function() {
 		var handValue = handRanker.valueOfHand(['As', 'Tc', 'Qc', 'Jc', 'Kc'], ['Ad', 'Ac']);
-		console.log("Hand value");
-		console.log(handValue)
+		//console.log("Hand value");
+		//console.log(handValue)
 		expect(handValue).to.deep.equal({
 			cards: ['Ac', 'Kc', 'Qc', 'Jc', 'Tc'],
 			handType: 'royalFlush',
@@ -58,8 +59,8 @@ describe("Hand resolve (ROYAL FLUSH)", function() {
 
 	it("Should resolve to royal flush (4)", function() {
 		var handValue = handRanker.valueOfHand(['Ac', 'Tc', 'Qc', 'Jc', 'Kc'], ['2c', '2s']);
-		console.log("Hand value");
-		console.log(handValue)
+		//console.log("Hand value");
+		//console.log(handValue)
 		expect(handValue).to.deep.equal({
 			cards: ['Ac', 'Kc', 'Qc', 'Jc', 'Tc'],
 			handType: 'royalFlush',
@@ -72,10 +73,10 @@ describe("Hand resolve (STRAIGHT FLUSH)", function() {
 
 
 	it("Should resolve to straight flush", function() {
-		console.log("A low straight flush!")
+		//console.log("A low straight flush!")
 		var handValue = handRanker.valueOfHand(['Ad', '3d', '5d', 'Kc', 'Ts'], ['4d', '2d']);
-		console.log("Hand value");
-		console.log(handValue)
+		//console.log("Hand value");
+		//console.log(handValue)
 		expect(handValue).to.deep.equal({
 			cards: ['Ad', '5d', '4d', '3d', '2d'],
 			handType: 'straightFlush',
@@ -85,8 +86,8 @@ describe("Hand resolve (STRAIGHT FLUSH)", function() {
 
 	it("Should resolve to straight flush (2)", function() {
 		var handValue = handRanker.valueOfHand(['Kd', '9d', 'Qd', 'Jd', 'Td'], ['Ac', 'As']);
-		console.log("Hand value");
-		console.log(handValue)
+		//console.log("Hand value");
+		//console.log(handValue)
 		expect(handValue).to.deep.equal({
 			cards: ['Kd', 'Qd', 'Jd', 'Td', '9d'],
 			handType: 'straightFlush',
@@ -96,8 +97,8 @@ describe("Hand resolve (STRAIGHT FLUSH)", function() {
 
 	it("Should resolve to straight flush (3)", function() {
 		var handValue = handRanker.valueOfHand(['6d', '3d', '5d', 'Kc', 'Ts'], ['4d', '2d']);
-		console.log("Hand value");
-		console.log(handValue)
+		//console.log("Hand value");
+		//console.log(handValue)
 		expect(handValue).to.deep.equal({
 			cards: ['6d', '5d', '4d', '3d', '2d'],
 			handType: 'straightFlush',
@@ -112,8 +113,8 @@ describe("Hand resolve (FOUR OF A KIND)", function() {
 
 	it("Should resolve to four of a kind", function() {
 		var handValue = handRanker.valueOfHand(['Ac', 'As', '5d', 'Kc', 'Ts'], ['Ah', 'Ad']);
-		console.log("Hand value");
-		console.log(handValue)
+		//console.log("Hand value");
+		//console.log(handValue)
 		expect(handValue).to.deep.equal({
 			cards: ['Ac', 'As', 'Ad', 'Ah', 'Kc'],
 			handType: 'fourOfAKind',
@@ -123,8 +124,8 @@ describe("Hand resolve (FOUR OF A KIND)", function() {
 
 	it("Should resolve to four of a kind (2)", function() {
 		var handValue = handRanker.valueOfHand(['7h', '7c', '7s', 'Tc', 'Ts'], ['Td', '7d']);
-		console.log("Hand value");
-		console.log(handValue)
+		//console.log("Hand value");
+		//console.log(handValue)
 		expect(handValue).to.deep.equal({
 			cards: ['Tc', '7h', '7c', '7s', '7d'],
 			handType: 'fourOfAKind',
@@ -134,8 +135,8 @@ describe("Hand resolve (FOUR OF A KIND)", function() {
 
 	it("Should resolve to four of a kind (3)", function() {
 		var handValue = handRanker.valueOfHand(['7h', '7c', '7s', 'Jc', '7d'], ['2h', '3h']);
-		console.log("Hand value");
-		console.log(handValue)
+		//console.log("Hand value");
+		//console.log(handValue)
 		expect(handValue).to.deep.equal({
 			cards: ['Jc', '7h', '7c', '7s', '7d'],
 			handType: 'fourOfAKind',
@@ -149,8 +150,8 @@ describe("Hand resolve (FULL HOUSE)", function() {
 
 	it("Should resolve to full house", function() {
 		var handValue = handRanker.valueOfHand(['2h', '2c', '3h', '3s', '6d'], ['3d', 'Qh']);
-		console.log("Hand value");
-		console.log(handValue)
+		//console.log("Hand value");
+		//console.log(handValue)
 		expect(handValue).to.deep.equal({
 			cards: ['3h', '3s', '3d', '2h', '2c'],
 			handType: 'fullHouse',
@@ -160,8 +161,8 @@ describe("Hand resolve (FULL HOUSE)", function() {
 
 	it("Should resolve to full house (2)", function() {
 		var handValue = handRanker.valueOfHand(['2h', '2c', '3h', '2s', '3d'], ['3c', 'Ah']);
-		console.log("Hand value");
-		console.log(handValue)
+		//console.log("Hand value");
+		//console.log(handValue)
 		expect(handValue).to.deep.equal({
 			cards: ['3h', '3c', '3d', '2h', '2c'],
 			handType: 'fullHouse',
@@ -171,8 +172,8 @@ describe("Hand resolve (FULL HOUSE)", function() {
 
 	it("Should resolve to full house (3)", function() {
 		var handValue = handRanker.valueOfHand(['Th', 'Tc', 'Qh', 'Ts', 'Qd'], ['5c', '6c']);
-		console.log("Hand value");
-		console.log(handValue)
+		//console.log("Hand value");
+		//console.log(handValue)
 		expect(handValue).to.deep.equal({
 			cards: ['Qh', 'Qd', 'Th', 'Tc', 'Ts'],
 			handType: 'fullHouse',
@@ -182,8 +183,8 @@ describe("Hand resolve (FULL HOUSE)", function() {
 
 	it("Should resolve to full house (4)", function() {
 		var handValue = handRanker.valueOfHand(['Th', 'Tc', 'Kh', 'Ts', 'Kd'], ['Ac', 'As']);
-		console.log("Hand value");
-		console.log(handValue)
+		//console.log("Hand value");
+		//console.log(handValue)
 		expect(handValue).to.deep.equal({
 			cards: ['As', 'Ac', 'Th', 'Tc', 'Ts'],
 			handType: 'fullHouse',
@@ -193,8 +194,8 @@ describe("Hand resolve (FULL HOUSE)", function() {
 
 	it("Should resolve to full house (5)", function() {
 		var handValue = handRanker.valueOfHand(['9h', 'Ad', 'Jc', 'Jd', '8d'], ['Js', '8s']);
-		console.log("Hand value");
-		console.log(handValue)
+		//console.log("Hand value");
+		//console.log(handValue)
 		expect(handValue).to.deep.equal({
 			cards: ['Jc', 'Js', 'Jd', '8s', '8d'],
 			handType: 'fullHouse',
@@ -210,8 +211,8 @@ describe("Hand resolve (FLUSH)", function() {
 
 	it("Should resolve to flush", function() {
 		var handValue = handRanker.valueOfHand(['Ah', '2h', '3h', '4h', '6d'], ['Kh', 'Qh']);
-		console.log("Hand value");
-		console.log(handValue)
+		//console.log("Hand value");
+		//console.log(handValue)
 		expect(handValue).to.deep.equal({
 			cards: ['Ah', 'Kh', 'Qh', '4h', '3h'],
 			handType: 'flush',
@@ -221,8 +222,8 @@ describe("Hand resolve (FLUSH)", function() {
 
 	it("Should resolve to flush (2)", function() {
 		var handValue = handRanker.valueOfHand(['4s', '4d', '3d', 'Th', '9d'], ['Ad', 'Td']);
-		console.log("Hand value");
-		console.log(handValue)
+		//console.log("Hand value");
+		//console.log(handValue)
 		expect(handValue).to.deep.equal({
 			cards: ['Ad', 'Td', '9d', '4d', '3d'],
 			handType: 'flush',
@@ -232,8 +233,8 @@ describe("Hand resolve (FLUSH)", function() {
 
 	it("Should resolve to flush (3)", function() {
 		var handValue = handRanker.valueOfHand(['Kc', '7c', '2c', 'Tc', 'Jc'], ['As', 'Td']);
-		console.log("Hand value");
-		console.log(handValue)
+		//console.log("Hand value");
+		//console.log(handValue)
 		expect(handValue).to.deep.equal({
 			cards: ['Kc', 'Jc', 'Tc', '7c', '2c'],
 			handType: 'flush',
@@ -243,8 +244,8 @@ describe("Hand resolve (FLUSH)", function() {
 
 	it("Should resolve to flush (4)", function() {
 		var handValue = handRanker.valueOfHand(['3d', '4s', '5d', '6s', '7d'], ['8d', '9d']);
-		console.log("Hand value");
-		console.log(handValue)
+		//console.log("Hand value");
+		//console.log(handValue)
 		expect(handValue).to.deep.equal({
 			cards: ['9d', '8d', '7d', '5d', '3d'],
 			handType: 'flush',
@@ -257,8 +258,8 @@ describe("Hand resolve (STRAIGHT)", function() {
 
 	it("Should resolve to straight (1)", function() {
 		var handValue = handRanker.valueOfHand(['Ah', '5c', '3c', '4c', 'Kc'], ['Js', '2s']);
-		console.log("Hand value");
-		console.log(handValue)
+		//console.log("Hand value");
+		//console.log(handValue)
 		expect(handValue).to.deep.equal({
 			cards: ['Ah', '5c', '4c', '3c', '2s'],
 			handType: 'straight',
@@ -268,8 +269,8 @@ describe("Hand resolve (STRAIGHT)", function() {
 
 	it("Should resolve to straight (2)", function() {
 		var handValue = handRanker.valueOfHand(['Ah', 'Tc', 'Jc', 'Qc', 'Kc'], ['Jd', 'Js']);
-		console.log("Hand value");
-		console.log(handValue)
+		//console.log("Hand value");
+		//console.log(handValue)
 		expect(handValue).to.deep.equal({
 			cards: ['Ah', 'Kc', 'Qc', 'Jc', 'Tc'],
 			handType: 'straight',
@@ -279,22 +280,33 @@ describe("Hand resolve (STRAIGHT)", function() {
 
 	it("Should resolve to straight (3)", function() {
 		var handValue = handRanker.valueOfHand(['5h', '6s', '7d', 'Qc', 'Kc'], ['8s', '4c']);
-		console.log("Hand value");
-		console.log(handValue)
+		//console.log("Hand value");
+		//console.log(handValue)
 		expect(handValue).to.deep.equal({
 			cards: ['8s', '7d', '6s', '5h', '4c'],
 			handType: 'straight',
 			kickers: [8,7,6,5,4]
 		});
-	})		
+	})	
+
+	it("Should resolve to straight (4)", function() {
+		var handValue = handRanker.valueOfHand(['Ah', 'As', '2d', '3c', '4c'], ['Ac', '5c']);
+
+		expect(handValue).to.deep.equal({
+			cards: ['Ah', '5c', '4c', '3c', '2d'],
+			handType: 'straight',
+			kickers: [5,4,3,2,1]
+		});
+	})
+
 });
 
 describe("Hand resolve (THREE OF A KIND)", function() {
 
 	it("Should resolve to trips (1)", function() {
 		var handValue = handRanker.valueOfHand(['Ah', 'Ac', 'As', 'Qc', 'Kc'], ['Jd', '3s']);
-		console.log("Hand value");
-		console.log(handValue)
+		//console.log("Hand value");
+		//console.log(handValue)
 		expect(handValue).to.deep.equal({
 			cards: ['Ah', 'Ac', 'As', 'Kc', 'Qc'],
 			handType: 'threeOfAKind',
@@ -304,8 +316,8 @@ describe("Hand resolve (THREE OF A KIND)", function() {
 
 	it("Should resolve to trips (2)", function() {
 		var handValue = handRanker.valueOfHand(['Ah', 'Ac', '2s', 'Qc', 'Kc'], ['Jd', 'As']);
-		console.log("Hand value");
-		console.log(handValue)
+		//console.log("Hand value");
+		//console.log(handValue)
 		expect(handValue).to.deep.equal({
 			cards: ['Ah', 'Ac', 'As', 'Kc', 'Qc'],
 			handType: 'threeOfAKind',
@@ -315,8 +327,8 @@ describe("Hand resolve (THREE OF A KIND)", function() {
 
 	it("Should resolve to trips (3)", function() {
 		var handValue = handRanker.valueOfHand(['Ah', '3c', 'Qc', '2s', 'Kc'], ['Ad', 'As']);
-		console.log("Hand value");
-		console.log(handValue)
+		//console.log("Hand value");
+		//console.log(handValue)
 		expect(handValue).to.deep.equal({
 			cards: ['Ah', 'As', 'Ad', 'Kc', 'Qc'],
 			handType: 'threeOfAKind',
@@ -331,8 +343,8 @@ describe("Hand resolve (TWO PAIR)", function() {
 
 	it("Should resolve to two pairs (1)", function() {
 		var handValue = handRanker.valueOfHand(['Ah', '3c', '2s', 'Qc', 'Jc'], ['Ad', 'Qd']);
-		console.log("Hand value");
-		console.log(handValue)
+		//console.log("Hand value");
+		//console.log(handValue)
 		expect(handValue).to.deep.equal({
 			cards: ['Ah', 'Ad', 'Qd', 'Qc', 'Jc'],
 			handType: 'twoPairs',
@@ -342,8 +354,8 @@ describe("Hand resolve (TWO PAIR)", function() {
 
 	it("Should resolve to two pairs (2)", function() {
 		var handValue = handRanker.valueOfHand(['7h', '3c', '2s', '7c', '5c'], ['3d', '2d']);
-		console.log("Hand value");
-		console.log(handValue)
+		//console.log("Hand value");
+		//console.log(handValue)
 		expect(handValue).to.deep.equal({
 			cards: ['7h', '7c', '5c', '3c', '3d'],
 			handType: 'twoPairs',
@@ -353,8 +365,8 @@ describe("Hand resolve (TWO PAIR)", function() {
 
 	it("Should resolve to two pairs (3)", function() {
 		var handValue = handRanker.valueOfHand(['7h', '5s', '2s', '7c', '5c'], ['Ad', 'Kd']);
-		console.log("Hand value");
-		console.log(handValue)
+		//console.log("Hand value");
+		//console.log(handValue)
 		expect(handValue).to.deep.equal({
 			cards: ['Ad', '7h', '7c', '5s', '5c'],
 			handType: 'twoPairs',
@@ -364,8 +376,8 @@ describe("Hand resolve (TWO PAIR)", function() {
 
 	it("Should resolve to two pairs (4)", function() {
 		var handValue = handRanker.valueOfHand(['7h', '5s', 'Qs', '7c', '5c'], ['Kh', 'Kd']);
-		console.log("Hand value");
-		console.log(handValue)
+		//console.log("Hand value");
+		//console.log(handValue)
 		expect(handValue).to.deep.equal({
 			cards: ['Kd', 'Kh', 'Qs', '7h', '7c'],
 			handType: 'twoPairs',
@@ -375,8 +387,8 @@ describe("Hand resolve (TWO PAIR)", function() {
 
 	it("Should resolve to two pairs (5)", function() {
 		var handValue = handRanker.valueOfHand(['Jh', '5s', 'Qs', '7c', 'Jc'], ['5c', 'As']);
-		console.log("Hand value");
-		console.log(handValue)
+		//console.log("Hand value");
+		//console.log(handValue)
 		expect(handValue).to.deep.equal({
 			cards: ['As', 'Jh', 'Jc', '5s', '5c'],
 			handType: 'twoPairs',
@@ -389,8 +401,8 @@ describe("Hand resolve (PAIR)", function() {
 
 	it("Should resolve to pair (1)", function() {
 		var handValue = handRanker.valueOfHand(['Jh', '5s', '2d', '7c', 'Th'], ['Qs', 'Qc']);
-		console.log("Hand value");
-		console.log(handValue)
+		//console.log("Hand value");
+		//console.log(handValue)
 		expect(handValue).to.deep.equal({
 			cards: ['Qc', 'Qs', 'Jh', 'Th', '7c'],
 			handType: 'pair',
@@ -400,8 +412,8 @@ describe("Hand resolve (PAIR)", function() {
 
 	it("Should resolve to pair (2)", function() {
 		var handValue = handRanker.valueOfHand(['Ah', '5s', '2d', 'Kc', 'Th'], ['Qs', 'Qc']);
-		console.log("Hand value");
-		console.log(handValue)
+		//console.log("Hand value");
+		//console.log(handValue)
 		expect(handValue).to.deep.equal({
 			cards: ['Ah', 'Kc', 'Qc', 'Qs', 'Th'],
 			handType: 'pair',
@@ -411,8 +423,8 @@ describe("Hand resolve (PAIR)", function() {
 
 	it("Should resolve to pair (3)", function() {
 		var handValue = handRanker.valueOfHand(['Ah', '5s', '2d', 'Kc', '9h'], ['3d', '2c']);
-		console.log("Hand value");
-		console.log(handValue)
+		//console.log("Hand value");
+		//console.log(handValue)
 		expect(handValue).to.deep.equal({
 			cards: ['Ah', 'Kc', '9h', '2d', '2c'],
 			handType: 'pair',
@@ -422,8 +434,8 @@ describe("Hand resolve (PAIR)", function() {
 
 	it("Should resolve to pair (4)", function() {
 		var handValue = handRanker.valueOfHand(['5s', '4s', 'Kd', '9c', '9h'], ['3d', 'Jc']);
-		console.log("Hand value");
-		console.log(handValue)
+		//console.log("Hand value");
+		//console.log(handValue)
 		expect(handValue).to.deep.equal({
 			cards: ['Kd', 'Jc', '9c', '9h', '5s'],
 			handType: 'pair',
@@ -436,8 +448,8 @@ describe("Hand resolve (HIGH CARD)", function() {
 
 	it("Should resolve to high card (1)", function() {
 		var handValue = handRanker.valueOfHand(['5s', '4s', 'Kd', '9c', 'Qh'], ['3d', 'Jc']);
-		console.log("Hand value");
-		console.log(handValue)
+		//console.log("Hand value");
+		//console.log(handValue)
 		expect(handValue).to.deep.equal({
 			cards: ['Kd', 'Qh', 'Jc', '9c', '5s'],
 			handType: 'highCard',
@@ -447,8 +459,8 @@ describe("Hand resolve (HIGH CARD)", function() {
 
 	it("Should resolve to high card (2)", function() {
 		var handValue = handRanker.valueOfHand(['4h', '5h', '6h', '7h', '9s'], ['As', '2s']);
-		console.log("Hand value");
-		console.log(handValue)
+		//console.log("Hand value");
+		//console.log(handValue)
 		expect(handValue).to.deep.equal({
 			cards: ['As', '9s', '7h', '6h', '5h'],
 			handType: 'highCard',
@@ -458,8 +470,8 @@ describe("Hand resolve (HIGH CARD)", function() {
 
 	it("Should resolve to high card (2)", function() {
 		var handValue = handRanker.valueOfHand(['Th', '5h', '6h', '7h', '9s'], ['3s', '2s']);
-		console.log("Hand value");
-		console.log(handValue)
+		//console.log("Hand value");
+		//console.log(handValue)
 		expect(handValue).to.deep.equal({
 			cards: ['Th', '9s', '7h', '6h', '5h'],
 			handType: 'highCard',
@@ -479,8 +491,8 @@ describe("Hand comparisons", function() {
 				{id: 3, cards: ['2s', '6c']}  // P2
 			]
 		);
-		console.log("Winning hands");
-		console.log(winningHands)
+		//console.log("Winning hands");
+		//console.log(winningHands)
 		expect(winningHands.length).to.equal(3);
 
 		var winnerIDs = _.map(winningHands, function(winningEval) {
@@ -497,8 +509,8 @@ describe("Hand comparisons", function() {
 				{id: 2, cards: ['Ks', 'Qd']}  // P2
 			]
 		);
-		console.log("Winning hand");
-		console.log(winningHands)
+		//console.log("Winning hand");
+		//console.log(winningHands)
 		// One winner
 		expect(winningHands.length).to.equal(1);
 		// P1 wins
@@ -514,8 +526,8 @@ describe("Hand comparisons", function() {
 				{id: 3, cards: ['3c', '3h']}, // P3
 			]
 		);
-		console.log("Winning hands");
-		console.log(winningHands)
+		//console.log("Winning hands");
+		//console.log(winningHands)
 		// One winner
 		expect(winningHands.length).to.equal(1);
 		// P2 wins
@@ -532,8 +544,8 @@ describe("Hand comparisons", function() {
 				{id: 4, cards: ['Qs', 'Qd']}, // P4 -> quads
 			]
 		);
-		console.log("Winning hands");
-		console.log(winningHands)
+		//console.log("Winning hands");
+		//console.log(winningHands)
 		// One winner
 		expect(winningHands.length).to.equal(1);
 		// P2 wins
@@ -550,8 +562,8 @@ describe("Hand comparisons", function() {
 				{id: 4, cards: ['As', '2c']}, // P4 -> pair
 			]
 		);
-		console.log("Winning hands");
-		console.log(winningHands)
+		//console.log("Winning hands");
+		//console.log(winningHands)
 
 		// Two winners
 		expect(winningHands.length).to.equal(2);
@@ -573,8 +585,8 @@ describe("Hand comparisons", function() {
 				{id: 4, cards: ['2d', '2c']}, // P4 -> small pair
 			]
 		);
-		console.log("Winning hands");
-		console.log(winningHands)
+		//console.log("Winning hands");
+		//console.log(winningHands)
 
 		// One winner
 		expect(winningHands.length).to.equal(1);
@@ -592,8 +604,8 @@ describe("Hand comparisons", function() {
 				{id: 4, cards: ['Ah', 'Ac']}, // P4 -> two pairs
 			]
 		);
-		console.log("Winning hands");
-		console.log(winningHands)
+		//console.log("Winning hands");
+		//console.log(winningHands)
 
 		// One winner
 		expect(winningHands.length).to.equal(1);
@@ -611,8 +623,8 @@ describe("Hand comparisons", function() {
 				{id: 3, cards: ['3s', 'Ks']}, // P3 
 			]
 		);
-		console.log("Winning hands");
-		console.log(winningHands)
+		//console.log("Winning hands");
+		//console.log(winningHands)
 
 		// Three winners
 		expect(winningHands.length).to.equal(3);
@@ -633,8 +645,8 @@ describe("Hand comparisons", function() {
 				{id: 3, cards: ['4h', '8d']}, // P3 loses with 8 kicker
 			]
 		);
-		console.log("Winning hands");
-		console.log(winningHands)
+		//console.log("Winning hands");
+		//console.log(winningHands)
 
 		// One winner
 		expect(winningHands.length).to.equal(1);
@@ -653,8 +665,8 @@ describe("Hand comparisons", function() {
 				{id: 4, cards: ['Qd', 'Qs']}, // P3 wins with good trips
 			]
 		);
-		console.log("Winning hands");
-		console.log(winningHands)
+		//console.log("Winning hands");
+		//console.log(winningHands)
 
 		// One winner
 		expect(winningHands.length).to.equal(1);
@@ -673,8 +685,8 @@ describe("Hand comparisons", function() {
 				{id: 4, cards: ['Kd', 'As']}, // P4 loses with pair
 			]
 		);
-		console.log("Winning hands");
-		console.log(winningHands)
+		//console.log("Winning hands");
+		//console.log(winningHands)
 
 		// One winner
 		expect(winningHands.length).to.equal(1);
@@ -693,8 +705,8 @@ describe("Hand comparisons", function() {
 				{id: 4, cards: ['6s', '9h']}, // P4 loses with middle straight
 			]
 		);
-		console.log("Winning hands");
-		console.log(winningHands)
+		//console.log("Winning hands");
+		//console.log(winningHands)
 
 		// One winner
 		expect(winningHands.length).to.equal(2);
@@ -715,8 +727,8 @@ describe("Hand comparisons", function() {
 				{id: 3, cards: ['Tc', 'Jc']}, // P2 loses with flush
 			]
 		);
-		console.log("Winning hands");
-		console.log(winningHands)
+		//console.log("Winning hands");
+		//console.log(winningHands)
 
 		// One winner
 		expect(winningHands.length).to.equal(1);
@@ -735,8 +747,8 @@ describe("Hand comparisons", function() {
 				{id: 4, cards: ['8d', '4c']}, // P4 shares
 			]
 		);
-		console.log("Winning hands");
-		console.log(winningHands)
+		//console.log("Winning hands");
+		//console.log(winningHands)
 
 		// Three winners
 		expect(winningHands.length).to.equal(3);
@@ -759,8 +771,8 @@ describe("Hand comparisons", function() {
 				{id: 5, cards: ['Qd', 'Qc']}, // P4 shares AAAQQ
 			]
 		);
-		console.log("Winning hands");
-		console.log(winningHands)
+		//console.log("Winning hands");
+		//console.log(winningHands)
 
 		// Three winners
 		expect(winningHands.length).to.equal(2);
@@ -783,8 +795,8 @@ describe("Hand comparisons", function() {
 				{id: 5, cards: ['Qd', '3d']}, // P5 wins pair of queens
 			]
 		);
-		console.log("Winning hands");
-		console.log(winningHands)
+		//console.log("Winning hands");
+		//console.log(winningHands)
 
 		// One winner
 		expect(winningHands.length).to.equal(1);
@@ -803,8 +815,8 @@ describe("Hand comparisons", function() {
 				{id: 3, cards: ['6s', '6c']}, // P4 loses with flush
 			]
 		);
-		console.log("Winning hands");
-		console.log(winningHands)
+		//console.log("Winning hands");
+		//console.log(winningHands)
 
 		// One winner
 		expect(winningHands.length).to.equal(1);
@@ -823,8 +835,8 @@ describe("Hand comparisons", function() {
 				{id: 4, cards: ['Kc', 'Kh']}, // P4 wins with KK33J
 			]
 		);
-		console.log("Winning hands");
-		console.log(winningHands)
+		//console.log("Winning hands");
+		//console.log(winningHands)
 
 		// One winner
 		expect(winningHands.length).to.equal(1);
@@ -843,8 +855,8 @@ describe("Hand comparisons", function() {
 				{id: 4, cards: ['Kc', 'Kh']}, // P4 loses with two pairs
 			]
 		);
-		console.log("Winning hands");
-		console.log(winningHands)
+		//console.log("Winning hands");
+		//console.log(winningHands)
 
 		// Two winners
 		expect(winningHands.length).to.equal(2);
@@ -868,8 +880,8 @@ describe("Hand comparisons", function() {
 				{id: 6, cards: ['Kd', 'Qd']}, // P6 shares
 			]
 		);
-		console.log("Winning hands");
-		console.log(winningHands)
+		//console.log("Winning hands");
+		//console.log(winningHands)
 
 		// Two winners
 		expect(winningHands.length).to.equal(4);
@@ -893,8 +905,8 @@ describe("Hand comparisons", function() {
 				{id: 6, cards: ['Tc', 'Th']}, // P6 loses with flush
 			]
 		);
-		console.log("Winning hands");
-		console.log(winningHands)
+		//console.log("Winning hands");
+		//console.log(winningHands)
 
 		// One winner
 		expect(winningHands.length).to.equal(1);
@@ -912,8 +924,8 @@ describe("Hand comparisons", function() {
 				{id: 3, cards: ['4c', '6c']}, // P3 shares
 			]
 		);
-		console.log("Winning hands");
-		console.log(winningHands)
+		//console.log("Winning hands");
+		//console.log(winningHands)
 
 		// Three winners
 		expect(winningHands.length).to.equal(3);

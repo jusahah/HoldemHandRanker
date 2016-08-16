@@ -209,7 +209,7 @@ function isLowestStraight(combo) {
 
 function isStraight(combo) {
 	var kickers = getKickersOfHand(combo);
-	//console.log("isStraight")
+	////console.log("isStraight")
 	// Check if has ace, we need to create two versions
 	if (hasAceInKickers(kickers)) {
 		// Create version where 14 is 1
@@ -229,8 +229,8 @@ function isStraight(combo) {
 function isThreeOfAKind(combo) {
 	var kickers = getKickersOfHand(combo);
 
-	console.log("Kickers");
-	console.log(kickers)
+	//console.log("Kickers");
+	//console.log(kickers)
 
 	// Possible trips (after sorted): xxx00, 0xxx0, 00xxx
 	var first = _.take(kickers, 3);
@@ -244,7 +244,7 @@ function isTwoPairs(combo) {
 	var kickers = getKickersOfHand(combo);
 
 	// Possible two pairs (after sorted): xxyy0, xx0yy, 0xxyy
-	console.log(kickers);
+	//console.log(kickers);
 	// xxyy0
 	var firstPair = _.take(kickers,2);
 	var sndPair   = _.takeRight(_.initial(kickers), 2);
@@ -295,7 +295,7 @@ function allTheSameInArray(arr) {
 
 // Helper
 function kickersInDecreasingOrder(kickers) {
-	//console.log(kickers);
+	////console.log(kickers);
 	var first = kickers[0];
 	var next = first - 1;
 
@@ -335,8 +335,8 @@ function findOutBestByKickers(evalInfos) {
 	.get('evalInfo')
 	.value();
 
-	console.log("Best eval info out of many");
-	console.log(bestEvalInfo);
+	//console.log("Best eval info out of many");
+	//console.log(bestEvalInfo);
 
 	return bestEvalInfo
 
@@ -574,20 +574,20 @@ function valueOfHand(boardCards, holeCards, includeHandRank) {
 		}
 	})
 
-	console.log("--Evals--");
-	console.log(evals);
+	//console.log("--Evals--");
+	//console.log(evals);
 	// Find out best handRank within the numerous evaluation objects
 	var bestRank = 10;
 	_.forEach(evals, function(evalInfo) {
 		if (bestRank > evalInfo.evaluation.handRank) bestRank = evalInfo.evaluation.handRank;
 	})
-	console.log("--Best rank found: " + bestRank);
+	//console.log("--Best rank found: " + bestRank);
 	// Only remain those which have the best handRank
 	var bests = _.filter(evals, function(evalInfo) {
 		return evalInfo.evaluation.handRank === bestRank;
 	})
-	console.log("--Best evals--");
-	console.log(bests);
+	//console.log("--Best evals--");
+	//console.log(bests);
 
 	var best = bests.length === 1 ? bests[0] : findOutBestByKickers(bests);
 
@@ -613,7 +613,7 @@ function rankEvaluations(evals) {
 	_.forEach(evals, function(evalObj) {
 		if (bestRank > evalObj.evalInfo.handRank) bestRank = evalObj.evalInfo.handRank;
 	})
-	console.log("--Best rank found: " + bestRank);
+	//console.log("--Best rank found: " + bestRank);
 	// Only remain those which have the best handRank
 	var bests = _.filter(evals, function(evalObj) {
 		return evalObj.evalInfo.handRank === bestRank;
@@ -690,13 +690,13 @@ module.exports = {
 				evalInfo: valueOfHand(boardCards, holeCards, true)
 			}
 		});
-		console.log("RANK HAND EVALS");
-		console.log(evals);
+		//console.log("RANK HAND EVALS");
+		//console.log(evals);
 
 		var bests = rankEvaluations(evals);
 
-		console.log("BEST RANKED HAND");
-		console.log(bests);
+		//console.log("BEST RANKED HAND");
+		//console.log(bests);
 
 		return bests;
 
