@@ -104,7 +104,9 @@ expect(winnerIDs).to.deep.equal([2,3]);
 
 ```
 
-MIT License and so on
+--- 
+
+#### MIT License and so on
 
 ### Todo:
 
