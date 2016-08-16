@@ -28,7 +28,7 @@ describe("Hand resolve (ROYAL FLUSH)", function() {
 	it("Should resolve to royal flush", function() {
 		var handValue = handRanker.valueOfHand(['Ah', 'Kh', 'Qh', 'Jh', '6d'], ['Tc', 'Th']);
 		//console.log("Hand value");
-		//console.log(handValue)
+		console.log(handValue)
 		expect(handValue).to.deep.equal({
 			cards: ['Ah', 'Kh', 'Qh', 'Jh', 'Th'],
 			handType: 'royalFlush',
@@ -484,7 +484,7 @@ describe("Hand resolve (HIGH CARD)", function() {
 
 describe("Hand comparisons", function() {
 	it("All should draw with equal flush", function() {
-		var winningHands = handRanker.rankHands(
+		var winningHands = handRanker.getWinners(
 			['2h', '3h', '5h', '6h', 'Kh'], // BOARD
 			[
 				{id: 1, cards: ['3s', 'Ac']}, // P1
@@ -503,7 +503,7 @@ describe("Hand comparisons", function() {
 	})
 
 	it("Pair should win highCard", function() {
-		var winningHands = handRanker.rankHands(
+		var winningHands = handRanker.getWinners(
 			['2h', '3c', '5h', '6h', '8s'], // BOARD
 			[
 				{id: 1, cards: ['3s', 'Ad']}, // P1
@@ -519,7 +519,7 @@ describe("Hand comparisons", function() {
 	})	
 
 	it("Higher straight should win lower straight and trips", function() {
-		var winningHands = handRanker.rankHands(
+		var winningHands = handRanker.getWinners(
 			['Ah', 'Kc', 'Qh', '2h', '3s'], // BOARD
 			[
 				{id: 1, cards: ['4d', '5d']}, // P1
@@ -536,7 +536,7 @@ describe("Hand comparisons", function() {
 	})	
 
 	it("Quads should win lower flush and full house", function() {
-		var winningHands = handRanker.rankHands(
+		var winningHands = handRanker.getWinners(
 			['Kh', 'Kc', 'Qh', 'Qc', '3c'], // BOARD
 			[
 				{id: 1, cards: ['4c', 'Ac']}, // P1 -> flush
@@ -554,7 +554,7 @@ describe("Hand comparisons", function() {
 	})
 
 	it("Two pairs with same kickers draw", function() {
-		var winningHands = handRanker.rankHands(
+		var winningHands = handRanker.getWinners(
 			['Th', 'Kc', '3h', '4c', 'Tc'], // BOARD
 			[
 				{id: 1, cards: ['Jd', 'Jh']}, // P1 -> two pairs winning
@@ -577,7 +577,7 @@ describe("Hand comparisons", function() {
 	})
 
 	it("Pair with good kicker wins over pair with lousy kicker", function() {
-		var winningHands = handRanker.rankHands(
+		var winningHands = handRanker.getWinners(
 			['6h', 'Kc', '3d', '8d', 'Jh'], // BOARD
 			[
 				{id: 1, cards: ['3s', 'As']}, // P1 -> small pair
@@ -596,7 +596,7 @@ describe("Hand comparisons", function() {
 	})
 
 	it("Full house wins over flush and two pairs", function() {
-		var winningHands = handRanker.rankHands(
+		var winningHands = handRanker.getWinners(
 			['2d', '3h', '3d', '2h', 'Jd'], // BOARD
 			[
 				{id: 1, cards: ['2s', 'As']}, // P1 -> small full house
@@ -615,7 +615,7 @@ describe("Hand comparisons", function() {
 	})
 
 	it("Board quads with ace kicker on board", function() {
-		var winningHands = handRanker.rankHands(
+		var winningHands = handRanker.getWinners(
 			['Td', 'Th', 'Ah', 'Tc', 'Ts'], // BOARD
 			[
 				// All players must draw
@@ -637,7 +637,7 @@ describe("Hand comparisons", function() {
 	})
 
 	it("Only high card hands", function() {
-		var winningHands = handRanker.rankHands(
+		var winningHands = handRanker.getWinners(
 			['Td', 'Jh', 'Ah', 'Qc', '5s'], // BOARD
 			[
 				// All players must draw
@@ -656,7 +656,7 @@ describe("Hand comparisons", function() {
 	})
 
 	it("Trips vs. two pairs", function() {
-		var winningHands = handRanker.rankHands(
+		var winningHands = handRanker.getWinners(
 			['Td', 'Jh', 'Ah', 'Qc', '5s'], // BOARD
 			[
 				// All players must draw
@@ -676,7 +676,7 @@ describe("Hand comparisons", function() {
 	})
 
 	it("Three straights against each other", function() {
-		var winningHands = handRanker.rankHands(
+		var winningHands = handRanker.getWinners(
 			['3s', '5s', '7c', '8c', 'Ad'], // BOARD
 			[
 				// All players must draw
@@ -696,7 +696,7 @@ describe("Hand comparisons", function() {
 	})	
 
 	it("Three straights against each other, two win", function() {
-		var winningHands = handRanker.rankHands(
+		var winningHands = handRanker.getWinners(
 			['3s', '5s', '7c', '8c', 'Jd'], // BOARD
 			[
 	
@@ -719,7 +719,7 @@ describe("Hand comparisons", function() {
 	})	
 
 	it("Straigh flush versus quads", function() {
-		var winningHands = handRanker.rankHands(
+		var winningHands = handRanker.getWinners(
 			['3c', '5c', '7c', 'Ac', '7d'], // BOARD
 			[
 	
@@ -738,7 +738,7 @@ describe("Hand comparisons", function() {
 	})	
 
 	it("Players share two pairs with same kicker", function() {
-		var winningHands = handRanker.rankHands(
+		var winningHands = handRanker.getWinners(
 			['Jc', 'Jd', 'Ah', 'Ac', '7d'], // BOARD
 			[
 
@@ -761,7 +761,7 @@ describe("Hand comparisons", function() {
 	})	
 
 	it("Players share on board full house, yet one has bigger snd pair", function() {
-		var winningHands = handRanker.rankHands(
+		var winningHands = handRanker.getWinners(
 			['Jc', 'Jd', 'Ah', 'Ac', 'As'], // BOARD
 			[
 	
@@ -785,7 +785,7 @@ describe("Hand comparisons", function() {
 	})
 
 	it("Different pairs against each others", function() {
-		var winningHands = handRanker.rankHands(
+		var winningHands = handRanker.getWinners(
 			['Jc', 'Td', 'Qs', '2c', '3s'], // BOARD
 			[
 	
@@ -806,7 +806,7 @@ describe("Hand comparisons", function() {
 	})
 
 	it("Royal flush beats straight flush", function() {
-		var winningHands = handRanker.rankHands(
+		var winningHands = handRanker.getWinners(
 			['Js', 'Ts', 'Qs', '2c', '3s'], // BOARD
 			[
 	
@@ -826,7 +826,7 @@ describe("Hand comparisons", function() {
 	})	
 
 	it("Two pairs beats pairs", function() {
-		var winningHands = handRanker.rankHands(
+		var winningHands = handRanker.getWinners(
 			['Jc', 'Ts', '3d', '2c', '3s'], // BOARD
 			[
 	
@@ -846,7 +846,7 @@ describe("Hand comparisons", function() {
 	})	
 
 	it("Trips share", function() {
-		var winningHands = handRanker.rankHands(
+		var winningHands = handRanker.getWinners(
 			['Jc', 'Ts', '3d', 'Ac', 'As'], // BOARD
 			[
 	
@@ -869,7 +869,7 @@ describe("Hand comparisons", function() {
 	})	
 
 	it("Ace-high straights beat ace-low straigh", function() {
-		var winningHands = handRanker.rankHands(
+		var winningHands = handRanker.getWinners(
 			['Jc', 'Ts', '3d', 'Ac', '5h'], // BOARD
 			[
 	
@@ -894,7 +894,7 @@ describe("Hand comparisons", function() {
 	})	
 
 	it("Full house beats flush", function() {
-		var winningHands = handRanker.rankHands(
+		var winningHands = handRanker.getWinners(
 			['Jc', 'Jd', '3c', 'Ac', '7c'], // BOARD
 			[
 	
@@ -916,7 +916,7 @@ describe("Hand comparisons", function() {
 	})	
 
 	it("All share a high card", function() {
-		var winningHands = handRanker.rankHands(
+		var winningHands = handRanker.getWinners(
 			['Ac', 'Kd', 'Qc', '8h', '7s'], // BOARD
 			[
 	

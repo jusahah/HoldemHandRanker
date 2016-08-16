@@ -716,7 +716,7 @@ module.exports = {
 	* @param {Array} arrayOfHoleCards - Array of holecard arrays
 	* @returns {Array} - Array where holecards are ranked in order (most valued 1st)
 	*/	
-	rankHands: function(boardCards, arrayOfHoleCardObjects) {
+	getWinners: function(boardCards, arrayOfHoleCardObjects) {
 
 		// holeCardObject = {id (optional): INT/STRING, cards: ARRAY[2]}
 
