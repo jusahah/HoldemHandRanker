@@ -7,6 +7,18 @@ var CARDS = [
 	['Ad', '2d', '3d', '4d', '5d', '6d', '7d', '8d', '9d', 'Td', 'Jd', 'Qd', 'Kd']
 ];
 
+/** HAND TYPES */
+var ROYAL_FLUSH = 1;
+var STRAIGHT_FLUSH = 2;
+var QUADS = 3;
+var FULL_HOUSE = 4;
+var FLUSH = 5;
+var STRAIGHT = 6;
+var TRIPS = 7;
+var TWO_PAIRS = 8;
+var PAIR = 9;
+var HIGH_CARD = 10; 
+
 var createAllFiveCombos = function(cards) {
 	var combos = [];
 	// Comment after shows which two are missing from the selection
@@ -62,7 +74,7 @@ var evaluateCombo = function(combo) {
 	if (isRoyalFlush(combo)) {
 		return {
 			handType: 'royalFlush',
-			handRank: 1, 
+			handRank: ROYAL_FLUSH, 
 			kickers: [14,13,12,11,10] // Can be hard-coded, royal flush is T->A
 		}
 	}
@@ -70,7 +82,7 @@ var evaluateCombo = function(combo) {
 	if (isStraightFlush(combo)) {
 		return {
 			handType: 'straightFlush',
-			handRank: 2, 
+			handRank: STRAIGHT_FLUSH, 
 			kickers: getKickersOfHand(combo)
 		}
 	}
@@ -78,7 +90,7 @@ var evaluateCombo = function(combo) {
 	if (isFourOfAKind(combo)) {
 		return {
 			handType: 'fourOfAKind',
-			handRank: 3, 
+			handRank: QUADS, 
 			kickers: getKickersOfHand(combo)
 		}
 	}
@@ -86,7 +98,7 @@ var evaluateCombo = function(combo) {
 	if (isFullHouse(combo)) {
 		return {
 			handType: 'fullHouse',
-			handRank: 4, 
+			handRank: FULL_HOUSE, 
 			kickers: getKickersOfHand(combo)
 		}
 	}
@@ -94,7 +106,7 @@ var evaluateCombo = function(combo) {
 	if (isFlush(combo)) {
 		return {
 			handType: 'flush',
-			handRank: 5, 
+			handRank: FLUSH, 
 			kickers: getKickersOfHand(combo)
 		}
 	}
@@ -103,7 +115,7 @@ var evaluateCombo = function(combo) {
 	if (isLowestStraight(combo)) {
 		return {
 			handType: 'straight',
-			handRank: 6, 
+			handRank: STRAIGHT, 
 			kickers: [5,4,3,2,1]
 		}
 	}
@@ -111,7 +123,7 @@ var evaluateCombo = function(combo) {
 	if (isStraight(combo)) {
 		return {
 			handType: 'straight',
-			handRank: 6, 
+			handRank: STRAIGHT, 
 			kickers: getKickersOfHand(combo)
 		}
 	}
@@ -119,28 +131,28 @@ var evaluateCombo = function(combo) {
 	if (isThreeOfAKind(combo)) {
 		return {
 			handType: 'threeOfAKind',
-			handRank: 7, 
+			handRank: TRIPS, 
 			kickers: getKickersOfHand(combo)
 		}
 	}
 	if (isTwoPairs(combo)) {
 		return {
 			handType: 'twoPairs',
-			handRank: 8, 
+			handRank: TWO_PAIRS, 
 			kickers: getKickersOfHand(combo)
 		}
 	}
 	if (isPair(combo)) {
 		return {
 			handType: 'pair',
-			handRank: 9, 
+			handRank: PAIR, 
 			kickers: getKickersOfHand(combo)
 		}
 	}
 	// Default
 	return {
 		handType: 'highCard',
-		handRank: 10, 
+		handRank: HIGH_CARD, 
 		kickers: getKickersOfHand(combo)
 	}
 
@@ -419,16 +431,16 @@ function rankCards(cards) {
 function resolveBestKickerUsage(kickers, rank) {
 	// Should probably use a mapping of rank -> function instead here
 	// And convert those magic numbers into constants for god's sake.
-	if (rank === 10) return resolveBetweenHighCards(kickers);
-	if (rank === 9) return resolveBetweenPairs(kickers);
-	if (rank === 8) return resolveBetweenTwoPairs(kickers);
-	if (rank === 7) return resolveBetweenTrips(kickers);
-	if (rank === 6) return resolveBetweenStraights(kickers);
-	if (rank === 5) return resolveBetweenFlushes(kickers);
-	if (rank === 4) return resolveBetweenFullHouses(kickers);
-	if (rank === 3) return resolveBetweenQuads(kickers);
-	if (rank === 2) return resolveBetweenStraightFlushes(kickers);
-	if (rank === 1) return resolveBetweenRoyalFlushes(kickers);
+	if (rank === HIGH_CARD) return resolveBetweenHighCards(kickers);
+	if (rank === PAIR) return resolveBetweenPairs(kickers);
+	if (rank === TWO_PAIRS) return resolveBetweenTwoPairs(kickers);
+	if (rank === TRIPS) return resolveBetweenTrips(kickers);
+	if (rank === STRAIGHT) return resolveBetweenStraights(kickers);
+	if (rank === FLUSH) return resolveBetweenFlushes(kickers);
+	if (rank === FULL_HOUSE) return resolveBetweenFullHouses(kickers);
+	if (rank === QUADS) return resolveBetweenQuads(kickers);
+	if (rank === STRAIGHT_FLUSH) return resolveBetweenStraightFlushes(kickers);
+	if (rank === ROYAL_FLUSH) return resolveBetweenRoyalFlushes(kickers);
 
 	throw new Error("Resolving best kicker failed - no resolve method to call?");
 }
