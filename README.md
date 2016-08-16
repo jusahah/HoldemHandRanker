@@ -2,6 +2,14 @@
 
 This component ranks poker hands. For example, you can give it an array of hands and it resolves the winning one for you.
 
+### Installation
+
+```javascript
+
+npm install holdemhandranker --save
+
+```
+
 ### Usage
 
 HoldemRanker presents very simple API. The API has two methods:
