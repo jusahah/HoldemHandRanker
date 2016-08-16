@@ -5,6 +5,7 @@ var expect = chai.expect;
 // Domain deps
 var handRanker = require('../ranker');
 
+// As a reminder, not used in code
 var CARDS = [
 	['Ah', '2h', '3h', '4h', '5h', '6h', '7h', '8h', '9h', 'Th', 'Jh', 'Qh', 'Kh'],
 	['As', '2s', '3s', '4s', '5s', '6s', '7s', '8s', '9s', 'Ts', 'Js', 'Qs', 'Ks'],
@@ -482,7 +483,7 @@ describe("Hand resolve (HIGH CARD)", function() {
 
 
 describe("Hand comparisons", function() {
-	it("All should draw with flush", function() {
+	it("All should draw with equal flush", function() {
 		var winningHands = handRanker.rankHands(
 			['2h', '3h', '5h', '6h', 'Kh'], // BOARD
 			[
