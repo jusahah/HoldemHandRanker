@@ -14,7 +14,11 @@ npm install holdemhandranker --save
 
 #### Update 9.2.18
 
-> HoldemRanker had major bug that caused getWinners-method behave incorrectly when two or more players had two pairs. This is now fixed and test added.
+> HoldemRanker had major bug that caused getWinners-method behave incorrectly when two or more players had two pairs. This was a major bug and is now fixed and test added for it.
+>
+>
+>
+> If you are using version downloaded before 9th of Feb 2018, please upgrade to latest version.
 
 HoldemRanker presents very simple API. The API has two methods:
 
