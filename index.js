@@ -546,10 +546,14 @@ var handComparisons = {
 			return b-a;
 		})
 
-		return threeVal * 10000 + extras[0] * 100 + extras[1];	
+		return threeVal * 10000 + extras[0] * 100 + extras[1] * 1;	
 	},
 	resolveBetweenTwoPairs: function(kickers) {
 		var kickersToCounts = _.countBy(kickers, function(kicker) { return kicker});
+		
+		//console.log("kickersToCounts");
+		//console.log(kickersToCounts);
+
 		var twoPairFormingVals = [];
 		var extra = 0
 		_.forOwn(kickersToCounts, function(count, kicker) {
@@ -565,7 +569,13 @@ var handComparisons = {
 			return b-a;
 		})
 
-		return twoPairFormingVals[0] * 10000 + twoPairFormingVals[1] * 100 + extra;	
+		//console.log("twoPairFormingVals");
+		//console.log(twoPairFormingVals);
+
+		var w = twoPairFormingVals[0] * 10000 + twoPairFormingVals[1] * 100 + extra * 1;
+
+		//console.log("---Two pairs worth---: " + w);
+		return w;	
 	},
 	resolveBetweenPairs: function(kickers) {
 		var kickersToCounts = _.countBy(kickers, function(kicker) { return kicker});
@@ -729,7 +739,9 @@ module.exports = {
 			}
 		});
 		//console.log("RANK HAND EVALS");
-		//console.log(evals);
+		//
+		//console.log(JSON.stringify(evals, 2));
+		//console.log("---------------------------")
 
 		var bests = rankEvaluations(evals);
 

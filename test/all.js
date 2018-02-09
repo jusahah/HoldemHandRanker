@@ -22,8 +22,8 @@ describe("INTERNAL: Get combos", function() {
 })
 */
 
-describe("Hand resolve (ROYAL FLUSH)", function() {
 
+describe("Hand resolve (ROYAL FLUSH)", function() {
 
 	it("Should resolve to royal flush", function() {
 		var handValue = handRanker.valueOfHand(['Ah', 'Kh', 'Qh', 'Jh', '6d'], ['Tc', 'Th']);
@@ -342,6 +342,29 @@ describe("Hand resolve (THREE OF A KIND)", function() {
 
 describe("Hand resolve (TWO PAIR)", function() {
 
+	it("Should resolve to highest possible two pairs", function() {
+		var handValue = handRanker.valueOfHand(['7h', '3c', '7s', 'Qc', '3d'], ['Ks', 'Kd']);
+		//console.log("Hand value");
+		//console.log(handValue)
+		expect(handValue).to.deep.equal({
+			cards: ['Kd', 'Ks', 'Qc', '7h', '7s'],
+			handType: 'twoPairs',
+			kickers: [13,13,12,7,7]
+		});
+	})
+
+	it("Should resolve to highest possible two pairs", function() {
+		var handValue = handRanker.valueOfHand(['7h', '3c', '7s', 'Qc', 'Qd'], ['8s', '8d']);
+		//console.log("Hand value");
+		//console.log(handValue)
+		expect(handValue).to.deep.equal({
+			cards: ['Qc', 'Qd', '8d', '8s', '7h'],
+			handType: 'twoPairs',
+			kickers: [12,12,8,8,7]
+		});
+	})
+
+
 	it("Should resolve to two pairs (1)", function() {
 		var handValue = handRanker.valueOfHand(['Ah', '3c', '2s', 'Qc', 'Jc'], ['Ad', 'Qd']);
 		//console.log("Hand value");
@@ -482,7 +505,50 @@ describe("Hand resolve (HIGH CARD)", function() {
 });
 
 
-describe("Hand comparisons", function() {
+describe("Hand comparisons:", function() {
+
+	it("For next HIGH + SMALL vs. SMALL + HIGH comparison, p1 value", function() {
+		var handValue = handRanker.valueOfHand(['2h', '5c', '5h', '6h', '6s'], ['3s', 'Ad']);
+		//console.log("Hand value");
+		//console.log(handValue)
+		expect(handValue).to.deep.equal({
+			cards: ['Ad', '6h', '6s', '5c', '5h'],
+			handType: 'twoPairs',
+			kickers: [14,6,6,5,5]
+		});
+	})
+
+	it("For next HIGH + SMALL vs. SMALL + HIGH comparison, p2 value", function() {
+		var handValue = handRanker.valueOfHand(['2h', '5c', '5h', '6h', '6s'], ['Qs', 'Qd']);
+		//console.log("Hand value");
+		//console.log(handValue)
+		expect(handValue).to.deep.equal({
+			cards: ['Qd', 'Qs', '6h', '6s', '5c'],
+			handType: 'twoPairs',
+			kickers: [12,12,6,6,5]
+		});
+	})
+
+
+	it("HIGH two pairs + SMALL kicker should win SMALL two pairs + HIGH kicker", function() {
+		var winningHands = handRanker.getWinners(
+			['2h', '5c', '5h', '6h', '6s'], // BOARD
+			[
+				{id: 1, cards: ['3s', 'Ad']}, // P1
+				{id: 2, cards: ['Qs', 'Qd']}  // P2
+			]
+		);
+		// Potential bug before 9.2.18!!
+		// P1 has two pairs with A kicker
+		// P2 has two pairs with low kicker, but two pairs are larger!
+		// Gives win to P1???
+
+		// One winner
+		expect(winningHands.length).to.equal(1);
+		// P2 wins
+		expect(winningHands[0].id).to.equal(2);
+	})	
+
 	it("All should draw with equal flush", function() {
 		var winningHands = handRanker.getWinners(
 			['2h', '3h', '5h', '6h', 'Kh'], // BOARD
