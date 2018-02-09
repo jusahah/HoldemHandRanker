@@ -12,6 +12,10 @@ npm install holdemhandranker --save
 
 ### Usage
 
+#### Update 9.2.18
+
+> HoldemRanker had major bug that caused getWinners-method behave incorrectly when two or more players had two pairs. This is now fixed and test added.
+
 HoldemRanker presents very simple API. The API has two methods:
 
 > **HoldemRanker.valueOfHand(communityCards, holeCards)**
